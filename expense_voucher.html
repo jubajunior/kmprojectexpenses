@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>খেলাফত মজলিস - ব্যয় ভাউচার</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap');
+
+  * { box-sizing: border-box; }
+
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  body {
+    font-family: 'Noto Sans Bengali', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #ddd;
+  }
+
+  .page {
+    width: 210mm;
+    height: 297mm;
+    margin: 10mm auto;
+    background: #fff;
+    padding: 2.5mm 5mm;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5mm;
+  }
+
+  .voucher {
+    border: 1.5px solid #000;
+    padding: 3mm 8mm;
+    height: 92mm;
+    flex: 0 0 92mm;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 1mm;
+  }
+
+  .header h1 {
+    font-size: 16pt;
+    line-height: 1.3;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 1px;
+  }
+
+  .header .address {
+    font-size: 9pt;
+    line-height: 1.3;
+    margin: 0.5mm 0 0 0;
+  }
+
+  .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5mm;
+  }
+
+  .voucher-no {
+    font-size: 10pt;
+    line-height: 1.3;
+    font-weight: 700;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 2mm;
+  }
+
+  .voucher-no input {
+    width: 25mm;
+  }
+
+  /* generic input styling: underline only, no box */
+  input[type="text"] {
+    border: none;
+    border-bottom: 1px dotted #000;
+    font-family: 'Noto Sans Bengali', sans-serif;
+    font-size: 10pt;
+    line-height: 1.3;
+    background: transparent;
+    padding: 0.6mm 1mm;
+    outline: none;
+  }
+
+  input[type="text"]:focus {
+    border-bottom: 1px solid #000;
+  }
+
+  .field-row {
+    display: flex;
+    align-items: baseline;
+    margin: 1mm 0;
+    font-size: 10pt;
+    line-height: 1.3;
+  }
+
+  .field-label {
+    white-space: nowrap;
+    margin-right: 2mm;
+  }
+
+  .field-row input[type="text"] {
+    flex: 1;
+  }
+
+  table.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1mm;
+    font-size: 9pt;
+    line-height: 1.3;
+  }
+
+  table.expense-table th,
+  table.expense-table td {
+    border: 1px solid #000;
+    padding: 1mm 2mm;
+    vertical-align: middle;
+  }
+
+  table.expense-table th {
+    text-align: center;
+    font-weight: 600;
+  }
+
+  table.expense-table td.date-col { width: 18%; }
+  table.expense-table td.desc-col { width: 62%; }
+  table.expense-table td.amount-col { width: 20%; }
+
+  .body-rows td { height: 5.5mm; }
+
+  .body-rows input[type="text"] {
+    width: 100%;
+    height: 100%;
+    line-height: 1.3;
+    border: none;
+    background: transparent;
+  }
+
+  .total-row td { font-weight: 600; }
+  .total-label { text-align: right; }
+
+  .total-row input[type="text"] {
+    width: 100%;
+    border: none;
+    font-weight: 600;
+  }
+
+  .kothay-row {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 1mm;
+    font-size: 9.5pt;
+    line-height: 1.35;
+  }
+
+  .kothay-value {
+    flex: 1;
+    border-bottom: 1px dotted #000;
+    white-space: normal;
+    word-break: break-word;
+    padding: 0.6mm 1mm;
+    min-height: 1em;
+  }
+
+  .signatures {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 2mm;
+    font-size: 9pt;
+    line-height: 1.3;
+  }
+
+  .sign-box {
+    text-align: center;
+    width: 40%;
+  }
+
+  .sign-line {
+    border-top: 1px solid #000;
+    padding-top: 1mm;
+  }
+
+  @media print {
+    html, body {
+      width: 210mm;
+      height: 297mm;
+      background: #fff;
+    }
+    .page {
+      margin: 0;
+      width: 210mm;
+      height: 297mm;
+      padding: 2.5mm 5mm;
+      page-break-after: avoid;
+    }
+    .voucher {
+      page-break-inside: avoid;
+    }
+    .no-print { display: none; }
+    input[type="text"] {
+      border-bottom: 1px dotted #000!important;
+    }
+    .body-rows input[type="text"],
+    .total-row input[type="text"] {
+      border: none !important;
+    }
+  }
+
+  .no-print {
+    max-width: 210mm;
+    margin: 5mm auto;
+    text-align: center;
+    font-family: sans-serif;
+  }
+  .no-print button {
+    padding: 8px 18px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print">
+  <button onclick="window.print()">প্রিন্ট করুন / Print</button>
+  <button onclick="clearAll()">সব খালি করুন / Clear All</button>
+</div>
+
+<div class="page">
+  <div id="voucher-container"></div>
+</div>
+
+<template id="voucher-template">
+  <div class="voucher">
+    <div class="header">
+      <h1>খেলাফত মজলিস</h1>
+      <p class="address">১৬, বিজয় নগর, ঢাকা - ১০০০</p>
+    </div>
+
+    <div class="top-row">
+      <div class="field-row" style="margin:0;">
+        <span class="field-label">তারিখ:</span>
+        <input type="text" style="width:40mm;">
+      </div>
+      <div class="voucher-no">
+        <span>ভাউচার নং:</span>
+        <input type="text">
+      </div>
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">ব্যয়কারীর নাম:</span>
+      <input type="text">
+    </div>
+
+    <div class="field-row">
+      <span class="field-label">ব্যয়ের খাত:</span>
+      <input type="text">
+    </div>
+
+    <table class="expense-table">
+      <thead>
+        <tr>
+          <th class="date-col">তারিখ</th>
+          <th class="desc-col">বিবরণ</th>
+          <th class="amount-col">টাকার পরিমাণ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="body-rows">
+          <td class="date-col"><input type="text"></td>
+          <td class="desc-col"><input type="text"></td>
+          <td class="amount-col"><input type="text"></td>
+        </tr>
+        <tr class="body-rows">
+          <td class="date-col"><input type="text"></td>
+          <td class="desc-col"><input type="text"></td>
+          <td class="amount-col"><input type="text"></td>
+        </tr>
+        <tr class="body-rows">
+          <td class="date-col"><input type="text"></td>
+          <td class="desc-col"><input type="text"></td>
+          <td class="amount-col"><input type="text"></td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="2" class="total-label">মোট:</td>
+          <td class="amount-col"><input type="text" readonly></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="kothay-row">
+      <span class="field-label">কথায়:</span>
+      <div class="kothay-value"></div>
+    </div>
+
+    <div class="signatures">
+      <div class="sign-box">
+        <div class="sign-line">ব্যয়কারীর স্বাক্ষর</div>
+      </div>
+      <div class="sign-box">
+        <div class="sign-line">বায়তুলমাল সম্পাদকের স্বাক্ষর</div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+  const container = document.getElementById('voucher-container');
+  const template = document.getElementById('voucher-template');
+  container.style.display = 'flex';
+  container.style.flexDirection = 'column';
+  container.style.gap = '5mm';
+  container.style.height = '100%';
+
+  for (let i = 0; i < 3; i++) {
+    const clone = template.content.cloneNode(true);
+    container.appendChild(clone);
+  }
+
+  function clearAll() {
+    document.querySelectorAll('input[type="text"]').forEach(inp => inp.value = '');
+  }
+
+  // ---- Auto total calculation ----
+  // Convert Bengali digits to English so parseFloat works, and vice versa for display
+  const bnDigits = "০১২৩৪৫৬৭৮৯";
+  function toEnglishDigits(str) {
+    return str.replace(/[০-৯]/g, d => bnDigits.indexOf(d));
+  }
+
+  document.querySelectorAll('.voucher').forEach(voucher => {
+    const amountInputs = voucher.querySelectorAll('.body-rows .amount-col input');
+    const totalInput = voucher.querySelector('.total-row .amount-col input');
+    const kothayValue = voucher.querySelector('.kothay-value');
+
+    function recalcTotal() {
+      let sum = 0;
+      amountInputs.forEach(inp => {
+        const val = parseFloat(toEnglishDigits(inp.value).replace(/[^0-9.]/g, ''));
+        if (!isNaN(val)) sum += val;
+      });
+      totalInput.value = sum ? sum.toLocaleString('en-US') : '';
+      kothayValue.textContent = sum ? numberToBengaliWords(Math.round(sum)) : '';
+    }
+
+    amountInputs.forEach(inp => inp.addEventListener('input', recalcTotal));
+  });
+
+  // ---- Number to Bengali words ----
+  const bnOnes = ['', 'এক', 'দুই', 'তিন', 'চার', 'পাঁচ', 'ছয়', 'সাত', 'আট', 'নয়', 'দশ',
+    'এগারো', 'বারো', 'তেরো', 'চৌদ্দ', 'পনেরো', 'ষোলো', 'সতেরো', 'আঠারো', 'উনিশ', 'বিশ',
+    'একুশ', 'বাইশ', 'তেইশ', 'চব্বিশ', 'পঁচিশ', 'ছাব্বিশ', 'সাতাশ', 'আঠাশ', 'ঊনত্রিশ', 'ত্রিশ',
+    'একত্রিশ', 'বত্রিশ', 'তেত্রিশ', 'চৌত্রিশ', 'পঁয়ত্রিশ', 'ছত্রিশ', 'সাঁইত্রিশ', 'আটত্রিশ', 'ঊনচল্লিশ', 'চল্লিশ',
+    'একচল্লিশ', 'বিয়াল্লিশ', 'তেতাল্লিশ', 'চুয়াল্লিশ', 'পঁয়তাল্লিশ', 'ছেচল্লিশ', 'সাতচল্লিশ', 'আটচল্লিশ', 'ঊনপঞ্চাশ', 'পঞ্চাশ',
+    'একান্ন', 'বাহান্ন', 'তিপ্পান্ন', 'চুয়ান্ন', 'পঞ্চান্ন', 'ছাপ্পান্ন', 'সাতান্ন', 'আটান্ন', 'ঊনষাট', 'ষাট',
+    'একষট্টি', 'বাষট্টি', 'তেষট্টি', 'চৌষট্টি', 'পঁয়ষট্টি', 'ছেষট্টি', 'সাতষট্টি', 'আটষট্টি', 'ঊনসত্তর', 'সত্তর',
+    'একাত্তর', 'বাহাত্তর', 'তিয়াত্তর', 'চুয়াত্তর', 'পঁচাত্তর', 'ছিয়াত্তর', 'সাতাত্তর', 'আটাত্তর', 'ঊনআশি', 'আশি',
+    'একাশি', 'বিরাশি', 'তিরাশি', 'চুরাশি', 'পঁচাশি', 'ছিয়াশি', 'সাতাশি', 'আটাশি', 'ঊননব্বই', 'নব্বই',
+    'একানব্বই', 'বিরানব্বই', 'তিরানব্বই', 'চুরানব্বই', 'পঁচানব্বই', 'ছিয়ানব্বই', 'সাতানব্বই', 'আটানব্বই', 'নিরানব্বই'];
+
+  function twoDigitWords(n) {
+    return bnOnes[n] || '';
+  }
+
+  function numberToBengaliWords(num) {
+    if (num === 0) return 'শূন্য টাকা মাত্র';
+    let n = num;
+    const crore = Math.floor(n / 10000000); n %= 10000000;
+    const lakh = Math.floor(n / 100000); n %= 100000;
+    const thousand = Math.floor(n / 1000); n %= 1000;
+    const hundred = Math.floor(n / 100); n %= 100;
+    const rest = n;
+
+    const parts = [];
+    if (crore) parts.push(twoDigitWords(crore) + ' কোটি');
+    if (lakh) parts.push(twoDigitWords(lakh) + ' লক্ষ');
+    if (thousand) parts.push(twoDigitWords(thousand) + ' হাজার');
+    if (hundred) parts.push(twoDigitWords(hundred) + 'শত');
+    if (rest) parts.push(twoDigitWords(rest));
+
+    return parts.join(' ') + ' টাকা মাত্র';
+  }
+</script>
+
+</body>
+</html>
