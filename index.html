@@ -25,17 +25,17 @@
     height: 297mm;
     margin: 10mm auto;
     background: #fff;
-    padding: 2.5mm 5mm;
+    padding: 6mm 8mm;
     display: flex;
     flex-direction: column;
-    gap: 1.5mm;
+    justify-content: space-between;
   }
 
   .voucher {
     border: 1.5px solid #000;
-    padding: 3mm 8mm;
-    height: 92mm;
-    flex: 0 0 92mm;
+    padding: 6mm 10mm;
+    height: 138mm;
+    flex: 0 0 138mm;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -44,32 +44,32 @@
 
   .header {
     text-align: center;
-    margin-bottom: 1mm;
+    margin-bottom: 2.5mm;
   }
 
   .header h1 {
-    font-size: 16pt;
-    line-height: 1.3;
+    font-size: 18pt;
+    line-height: 1.2;
     font-weight: 700;
     margin: 0;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
   }
 
   .header .address {
-    font-size: 9pt;
+    font-size: 9.5pt;
     line-height: 1.3;
-    margin: 0.5mm 0 0 0;
+    margin: 1mm 0 0 0;
   }
 
   .top-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5mm;
+    margin-bottom: 2mm;
   }
 
   .voucher-no {
-    font-size: 10pt;
+    font-size: 10.5pt;
     line-height: 1.3;
     font-weight: 700;
     text-align: right;
@@ -79,7 +79,7 @@
   }
 
   .voucher-no input {
-    width: 25mm;
+    width: 30mm;
   }
 
   /* generic input styling: underline only, no box */
@@ -87,10 +87,10 @@
     border: none;
     border-bottom: 1px dotted #000;
     font-family: 'Noto Sans Bengali', sans-serif;
-    font-size: 10pt;
+    font-size: 10.5pt;
     line-height: 1.3;
     background: transparent;
-    padding: 0.6mm 1mm;
+    padding: 0.8mm 1.5mm;
     outline: none;
   }
 
@@ -101,14 +101,15 @@
   .field-row {
     display: flex;
     align-items: baseline;
-    margin: 1mm 0;
-    font-size: 10pt;
+    margin: 1.5mm 0;
+    font-size: 10.5pt;
     line-height: 1.3;
   }
 
   .field-label {
     white-space: nowrap;
     margin-right: 2mm;
+    font-weight: 600;
   }
 
   .field-row input[type="text"] {
@@ -118,28 +119,29 @@
   table.expense-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1mm;
-    font-size: 9pt;
+    margin-top: 2mm;
+    font-size: 10pt;
     line-height: 1.3;
   }
 
   table.expense-table th,
   table.expense-table td {
     border: 1px solid #000;
-    padding: 1mm 2mm;
+    padding: 1.5mm 2.5mm;
     vertical-align: middle;
   }
 
   table.expense-table th {
     text-align: center;
     font-weight: 600;
+    background-color: #fcfcfc;
   }
 
   table.expense-table td.date-col { width: 18%; }
-  table.expense-table td.desc-col { width: 62%; }
-  table.expense-table td.amount-col { width: 20%; }
+  table.expense-table td.desc-col { width: 60%; }
+  table.expense-table td.amount-col { width: 22%; }
 
-  .body-rows td { height: 5.5mm; }
+  .body-rows td { height: 7mm; }
 
   .body-rows input[type="text"] {
     width: 100%;
@@ -161,8 +163,8 @@
   .kothay-row {
     display: flex;
     align-items: flex-start;
-    margin-top: 1mm;
-    font-size: 9.5pt;
+    margin-top: 2.5mm;
+    font-size: 10pt;
     line-height: 1.35;
   }
 
@@ -171,27 +173,27 @@
     border-bottom: 1px dotted #000;
     white-space: normal;
     word-break: break-word;
-    padding: 0.6mm 1mm;
-    min-height: 1em;
+    padding: 0.8mm 1.5mm;
+    min-height: 1.2em;
   }
 
   .signatures {
     display: flex;
     justify-content: space-between;
     margin-top: auto;
-    padding-top: 2mm;
-    font-size: 9pt;
+    padding-top: 3mm;
+    font-size: 10pt;
     line-height: 1.3;
   }
 
   .sign-box {
     text-align: center;
-    width: 40%;
+    width: 35%;
   }
 
   .sign-line {
     border-top: 1px solid #000;
-    padding-top: 1mm;
+    padding-top: 1.5mm;
   }
 
   @media print {
@@ -204,7 +206,7 @@
       margin: 0;
       width: 210mm;
       height: 297mm;
-      padding: 2.5mm 5mm;
+      padding: 6mm 8mm;
       page-break-after: avoid;
     }
     .voucher {
@@ -212,7 +214,7 @@
     }
     .no-print { display: none; }
     input[type="text"] {
-      border-bottom: 1px dotted #000!important;
+      border-bottom: 1px dotted #000 !important;
     }
     .body-rows input[type="text"],
     .total-row input[type="text"] {
@@ -222,15 +224,21 @@
 
   .no-print {
     max-width: 210mm;
-    margin: 5mm auto;
+    margin: 8mm auto 4mm;
     text-align: center;
     font-family: sans-serif;
   }
   .no-print button {
-    padding: 8px 18px;
+    padding: 9px 20px;
     font-size: 14px;
     cursor: pointer;
     margin: 0 5px;
+    border: 1px solid #999;
+    border-radius: 4px;
+    background: #fff;
+  }
+  .no-print button:hover {
+    background: #eee;
   }
 </style>
 </head>
@@ -255,7 +263,7 @@
     <div class="top-row">
       <div class="field-row" style="margin:0;">
         <span class="field-label">তারিখ:</span>
-        <input type="text" style="width:40mm;">
+        <input type="text" style="width:45mm;">
       </div>
       <div class="voucher-no">
         <span>ভাউচার নং:</span>
@@ -297,6 +305,16 @@
           <td class="desc-col"><input type="text"></td>
           <td class="amount-col"><input type="text"></td>
         </tr>
+        <tr class="body-rows">
+          <td class="date-col"><input type="text"></td>
+          <td class="desc-col"><input type="text"></td>
+          <td class="amount-col"><input type="text"></td>
+        </tr>
+        <tr class="body-rows">
+          <td class="date-col"><input type="text"></td>
+          <td class="desc-col"><input type="text"></td>
+          <td class="amount-col"><input type="text"></td>
+        </tr>
         <tr class="total-row">
           <td colspan="2" class="total-label">মোট:</td>
           <td class="amount-col"><input type="text" readonly></td>
@@ -311,10 +329,10 @@
 
     <div class="signatures">
       <div class="sign-box">
-        <!-- <div class="sign-line">ব্যয়কারীর স্বাক্ষর</div> -->
+        <div class="sign-line">ব্যয়কারীর স্বাক্ষর</div>
       </div>
       <div class="sign-box">
-        <div class="sign-line">স্বাক্ষর</div>
+        <div class="sign-line">অনুমোদনকারীর স্বাক্ষর</div>
       </div>
     </div>
   </div>
@@ -325,20 +343,21 @@
   const template = document.getElementById('voucher-template');
   container.style.display = 'flex';
   container.style.flexDirection = 'column';
-  container.style.gap = '5mm';
+  container.style.justifyContent = 'space-between';
   container.style.height = '100%';
 
-  for (let i = 0; i < 3; i++) {
+  // প্রতি পেজে ২টি ভাউচার তৈরি করার জন্য લুপ ২ বার চলবে
+  for (let i = 0; i < 2; i++) {
     const clone = template.content.cloneNode(true);
     container.appendChild(clone);
   }
 
   function clearAll() {
     document.querySelectorAll('input[type="text"]').forEach(inp => inp.value = '');
+    document.querySelectorAll('.kothay-value').forEach(div => div.textContent = '');
   }
 
   // ---- Auto total calculation ----
-  // Convert Bengali digits to English so parseFloat works, and vice versa for display
   const bnDigits = "০১২৩৪৫৬৭৮৯";
   function toEnglishDigits(str) {
     return str.replace(/[০-৯]/g, d => bnDigits.indexOf(d));
